@@ -1,15 +1,15 @@
-
 import throttle from 'lodash.throttle'
 
 const form = document.querySelector('.feedback-form')
 
-
 const STORAGE_KEY = 'feedback-form-state';
-const formData = {};
+let formData = {};
+    
 
 form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', saveInLocalStorage);
 form.addEventListener('input', throttle(onInputData, 500))
+
+initForm();
 
 
 function onInputData(evt) {
@@ -17,40 +17,36 @@ function onInputData(evt) {
     console.log(evt.target.value)
     formData[evt.target.name] = evt.target.value;
     console.log(formData)
+     const message = JSON.stringify(formData);
+    localStorage.setItem(STORAGE_KEY, message);
 }
 
 
-initForm();
-
-
-// (отправка формы)
+// (отправка формы, запись в localStorage)
 function onFormSubmit(evt) {
     evt.preventDefault();
+    const formElements = evt.target;
+    let email = formElements.email.value;
+    let message = formElements.message.value;
+    if (email === '' || message === '') {
+        alert('введите данные')
+        return;
+    }
     console.log('отправкa');
     evt.target.reset();
     localStorage.removeItem(STORAGE_KEY);
-}
-
-    
- // (запись в localStorage)
-function saveInLocalStorage(evt) {
-    const message = JSON.stringify(formData);
-    // console.log(message)
-    localStorage.setItem(STORAGE_KEY, message)
-}
+    formData = {};
+   }
+   
     
 //(восстановление из localStorage)
 function initForm(evt) {
     let savedMessage = localStorage.getItem(STORAGE_KEY)
-    // console.log(savedMessage)
-if (savedMessage) {
     savedMessage = JSON.parse(savedMessage)
-    Object.entries(savedMessage).forEach(([email, message]) => {
-        console.log([email, message])
-        form.elements[email].value = message;
-    })
+
+    // console.log(savedMessage)
+    if (savedMessage) {
+        form.email.value = savedMessage.email;
+        form.message.value = savedMessage.message;
+    }
 }
-  }
-  
-
-
