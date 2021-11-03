@@ -8,7 +8,7 @@ const LOCALSTORAGE_KEY = "videoplayer-current-time"
 
 
 
-player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
+const setCurrentTime = player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
 
 player.on('timeupdate', throttle(data => localStorage.setItem(LOCALSTORAGE_KEY, data.seconds), 1000));
 

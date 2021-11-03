@@ -3110,7 +3110,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const iframe = document.querySelector('iframe');
 const player = new _player.default(iframe);
 const LOCALSTORAGE_KEY = "videoplayer-current-time";
-player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
+const setCurrentTime = player.setCurrentTime(localStorage.getItem(LOCALSTORAGE_KEY));
 player.on('timeupdate', (0, _lodash.default)(data => localStorage.setItem(LOCALSTORAGE_KEY, data.seconds), 1000));
 },{"@vimeo/player":"../node_modules/@vimeo/player/dist/player.es.js","lodash.throttle":"../node_modules/lodash.throttle/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -3140,7 +3140,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52737" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56736" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
