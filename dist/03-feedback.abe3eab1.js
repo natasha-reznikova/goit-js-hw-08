@@ -568,44 +568,46 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const form = document.querySelector('.feedback-form');
 const STORAGE_KEY = 'feedback-form-state';
-const formData = {};
+let formData = {};
 form.addEventListener('submit', onFormSubmit);
-form.addEventListener('input', saveInLocalStorage);
 form.addEventListener('input', (0, _lodash.default)(onInputData, 500));
+initForm();
 
 function onInputData(evt) {
   console.log(evt.target.name);
   console.log(evt.target.value);
   formData[evt.target.name] = evt.target.value;
   console.log(formData);
-}
+  const message = JSON.stringify(formData);
+  localStorage.setItem(STORAGE_KEY, message);
+} // (отправка формы, запись в localStorage)
 
-initForm(); // (отправка формы)
 
 function onFormSubmit(evt) {
   evt.preventDefault();
+  const formElements = evt.target;
+  let email = formElements.email.value;
+  let message = formElements.message.value;
+
+  if (email === '' || message === '') {
+    alert('введите данные');
+    return;
+  }
+
   console.log('отправкa');
   evt.target.reset();
   localStorage.removeItem(STORAGE_KEY);
-} // (запись в localStorage)
-
-
-function saveInLocalStorage(evt) {
-  const message = JSON.stringify(formData); // console.log(message)
-
-  localStorage.setItem(STORAGE_KEY, message);
+  formData = {};
 } //(восстановление из localStorage)
 
 
 function initForm(evt) {
-  let savedMessage = localStorage.getItem(STORAGE_KEY); // console.log(savedMessage)
+  let savedMessage = localStorage.getItem(STORAGE_KEY);
+  savedMessage = JSON.parse(savedMessage); // console.log(savedMessage)
 
   if (savedMessage) {
-    savedMessage = JSON.parse(savedMessage);
-    Object.entries(savedMessage).forEach(([email, message]) => {
-      console.log([email, message]);
-      form.elements[email].value = message;
-    });
+    form.email.value = savedMessage.email;
+    form.message.value = savedMessage.message;
   }
 }
 },{"lodash.throttle":"../node_modules/lodash.throttle/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
@@ -636,7 +638,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52086" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52737" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
